@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class StudentRepositoryTest {
     @Autowired
-    private StudentRepository studentRepository;
+    private StudentRepository underTest;
 
     @BeforeEach
     void setUp() {
@@ -19,11 +19,11 @@ class StudentRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        studentRepository.deleteAll();
+        underTest.deleteAll();
     }
 
     @Test
-    void testItChecksEmailExists() {
+    void checksEmailExists() {
         String email = "diana@gmail.com";
 
         Student student = new Student(
@@ -32,18 +32,18 @@ class StudentRepositoryTest {
             Gender.FEMALE
         );
 
-        studentRepository.save(student);
+        underTest.save(student);
 
-        boolean emailExists = studentRepository.selectExistsEmail(email);
+        boolean emailExists = underTest.selectExistsEmail(email);
 
         assertTrue(emailExists);
     }
 
     @Test
-    void testItChecksEmailDoesNotExist() {
+    void checksEmailDoesNotExist() {
         String email = "diana@gmail.com";
 
-        boolean emailExists = studentRepository.selectExistsEmail(email);
+        boolean emailExists = underTest.selectExistsEmail(email);
 
         assertFalse(emailExists);
     }
