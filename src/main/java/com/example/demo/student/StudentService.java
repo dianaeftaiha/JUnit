@@ -3,9 +3,7 @@ package com.example.demo.student;
 import com.example.demo.student.exception.BadRequestException;
 import com.example.demo.student.exception.StudentNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -20,11 +18,9 @@ public class StudentService {
     }
 
     public void addStudent(Student student) {
-        Boolean existsEmail = studentRepository
-                .selectExistsEmail(student.getEmail());
+        Boolean existsEmail = studentRepository.selectExistsEmail(student.getEmail());
         if (existsEmail) {
-            throw new BadRequestException(
-                    "Email " + student.getEmail() + " taken");
+            throw new BadRequestException("Email " + student.getEmail() + " taken");
         }
 
         studentRepository.save(student);
