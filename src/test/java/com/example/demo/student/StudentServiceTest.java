@@ -1,5 +1,6 @@
 package com.example.demo.student;
 
+import com.example.demo.student.exception.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,7 +8,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,6 +50,23 @@ class StudentServiceTest {
         Student capturedStudent = studentArgumentCaptor.getValue();
 
         assertSame(student, capturedStudent);
+    }
+
+    @Test
+    void throwsExceptionWhenEmailIsTaken() {
+        String email = "diana@gmail.com";
+
+        Student student = new Student(
+                "Diana",
+                email,
+                Gender.FEMALE
+        );
+
+        given(studentRepository.selectExistsEmail(student.getEmail()))
+                .willReturn(true);
+
+        BadRequestException exception = assertThrows(BadRequestException.class, () -> studentService.addStudent(student));
+        assertEquals(exception.getMessage(), "Email " + email + " is taken");
     }
 
     @Test
