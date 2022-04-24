@@ -1,1 +1,1 @@
-Course URL https://youtu.be/Geq60OVyBPg
+Tutorial URL https://youtu.be/Geq60OVyBPg
